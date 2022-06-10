@@ -1,0 +1,25 @@
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+      
+        sort(intervals.begin() , intervals.end());
+        vector<vector<int>>v;
+        v.push_back({intervals[0][0] , intervals[0][1]});
+        
+        int indx = 0;
+        
+        for(int i = 1; i < intervals.size(); i++)
+        {
+            int s = intervals[i][0] , e = intervals[i][1];
+            if(v[indx][0] <= s && s <= v[indx][1]) 
+            {
+                v[indx][0] = min(v[indx][0] , s);
+                v[indx][1] = max(v[indx][1] , e);
+            }
+            else
+            {
+                v.push_back({intervals[i][0] , intervals[i][1]});
+                indx++;
+            }
+        }
+        return v;
+       
+    }
