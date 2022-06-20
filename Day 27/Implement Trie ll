@@ -1,0 +1,137 @@
+struct Node{
+    Node* arr[26];
+    bool flag;
+    int cntWordsEnd = 0;
+    int cntPrefixs = 0;
+    
+    bool contains(char c)
+    {
+        return (arr[c - 'a'] != NULL);
+    }
+    
+    void put(char c , Node* newNode)
+    {
+        arr[c - 'a'] = newNode;
+    }
+    
+    Node* getNext(char c)
+    {
+        return arr[c - 'a'];
+    }
+    
+    void increaseCntWordsEnd()
+    {
+        cntWordsEnd++;
+    }
+    
+    void increaseCntPrefixs()
+    {
+        cntPrefixs++;
+    }
+    
+    void decreaseCntWordsEnd()
+    {
+        cntWordsEnd--;
+    }
+    
+    void decreaseCntPrefixs()
+    {
+        cntPrefixs--;
+    }
+    
+    int getCntWordsEnd()
+    {
+        return cntWordsEnd;
+    }
+    
+    int getCntPrefixs()
+    {
+        return cntPrefixs;
+    }
+    
+    void setFlag()
+    {
+        flag = true;
+    }
+};
+class Trie{
+     Node* root = new Node();
+    public:
+
+    Trie(){
+        // Write your code here.
+    }
+
+    void insert(string &word){
+        Node* temp = root;
+        for(int i = 0; i < word.size(); i++)
+        {
+            if(!temp->contains(word[i]))
+            {
+                Node* newNode = new Node();
+                temp->put(word[i] , newNode);
+            }
+            temp->increaseCntPrefixs();
+            temp = temp->getNext(word[i]);
+        }
+        temp->increaseCntWordsEnd();
+    }
+    
+    
+    bool search(string word) {
+        Node* temp = root;
+        for(int i = 0; i < word.size(); i++)
+        {
+            if(temp->contains(word[i]))
+            {
+               temp = temp->getNext(word[i]);
+            }
+            else
+                return false;
+        }
+        if(temp->flag == true)
+            return true;
+        return false;
+    }
+
+    int countWordsEqualTo(string &word){
+        Node* temp = root;
+        for(int i = 0; i < word.size(); i++)
+        {
+            if(temp->contains(word[i]))
+            {
+               temp = temp->getNext(word[i]);
+            }
+            else
+                return false;
+        }
+        return temp->getCntWordsEnd();
+    }
+
+    int countWordsStartingWith(string &word){
+        Node* temp = root;
+        for(int i = 0; i < word.size(); i++)
+        {
+            if(temp->contains(word[i]))
+            {
+               temp = temp->getNext(word[i]);
+            }
+            else
+                return 0;
+        }
+        return temp->getCntPrefixs();
+    }
+
+   void erase(string & word) {
+    Node * temp = root;
+    for (int i = 0; i < word.length(); i++) {
+      if (temp -> contains(word[i])) {
+        temp = temp -> getNext(word[i]);
+        temp -> decreaseCntPrefixs();
+      } else {
+        return;
+      }
+    }
+    temp -> decreaseCntWordsEnd();
+  }
+};
