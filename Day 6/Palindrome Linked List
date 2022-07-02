@@ -1,0 +1,14 @@
+    private: string s1 , s2;
+public:
+    void helper(ListNode* head){
+        if(head == NULL) return;
+        s1 += (char)head->val;
+        helper(head->next);
+        s2 += (char)head->val;
+    }
+    bool isPalindrome(ListNode* head) {
+        helper(head);
+        if(s1 == s2) return true;
+        return false;
+        
+    }
