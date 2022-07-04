@@ -1,0 +1,50 @@
+int trap(vector<int>& height) {
+        
+        stack<int>st;
+        vector<int>v;
+        
+        st.push(height[0]);
+        v.push_back(st.top());
+        
+        int i = 1;
+        int n = height.size();
+        
+        while(i < n)
+        {
+            if(st.top() < height[i])
+            {
+                st.push(height[i]);
+            }
+            v.push_back(st.top());
+            i++;
+        }
+        
+        stack<int>st1;
+        vector<int>v1;
+        
+        st1.push(height[n - 1]);
+        v1.push_back(st1.top());
+        
+        i = n - 2;
+        
+        while(i >= 0)
+        {
+            if(st1.top() < height[i])
+            {
+                st1.push(height[i]);
+            }
+            v1.push_back(st1.top());
+            i--;
+        }
+        
+        reverse(v1.begin() , v1.end());
+        
+        int sum = 0;
+        
+        for(int i = 0; i < n; i++)
+        {
+            sum += min(v[i] , v1[i]) - height[i];
+        }
+        
+        return sum;
+    }
